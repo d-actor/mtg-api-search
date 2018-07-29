@@ -32,9 +32,11 @@ class App extends Component {
   displayMatches = () => {
     const matchArray = this.search()
     return matchArray.map( card =>
-      <Column lg={4}>
-        <Card key={card.id}>
+      <Column lg={4} key={card.id}>
+        <Card>
           <CardName>{ card.name }</CardName>
+          <br />
+          <img src={card.imageUrl} />
         </Card>
       </Column>
     )
@@ -91,11 +93,8 @@ const Column = styled.div`
 
 const Card = styled.section`
   padding: 4em;
-  width: 30vw;
-  height: 30vh;
   border: 1px solid black;
   background: #87c67d;
-  display: flex;
 `
 
 export default App;
