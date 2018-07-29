@@ -63,10 +63,6 @@ const Wrapper = styled.div`
  }
 `
 
-const CardName = styled.h2`
-  color: #ebffaf;
-`
-
 function getWidthString(span) {
   if (!span) return;
 
@@ -91,8 +87,12 @@ const Column = styled.div`
   }
 `
 
+const CardName = styled.h2`
+  color: #ebffaf;
+`
+
 const Card = styled.section`
-  padding: 4em;
+  padding: 2em;
   border: 1px solid black;
   background: #87c67d;
 `
