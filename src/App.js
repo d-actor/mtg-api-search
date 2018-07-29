@@ -8,7 +8,7 @@ class App extends Component {
   componentDidMount() {
     axios.get('https://api.magicthegathering.io/v1/cards')
       .then( res => {
-        this.setState({ cards: res.data })
+        this.setState({ cards: res.data.cards })
       })
       .catch ( err => {
         console.log(err)
@@ -23,16 +23,20 @@ class App extends Component {
 
   search = () => {
     const { cards, value } = this.state
-    const regex = new RegExp(value, 'gi')
-    return cards.filter( card =>
-      return card.match(regex)
-    )
+    return cards.filter( card => {
+      const regex = new RegExp(value, 'gi')
+      return card.name.match(regex)
+    })
   }
 
   displayMatches = () => {
     const matchArray = this.search()
     return matchArray.map( card =>
-      <li>{ card.name }</li>
+      <Column lg={4}>
+        <Card key={card.id}>
+          <CardName>{ card.name }</CardName>
+        </Card>
+      </Column>
     )
   }
 
@@ -41,13 +45,58 @@ class App extends Component {
       <div>
         <h1>MTG Search</h1>
         <input name="value" onChange={this.handleChange} />
-        <ul>
+        <Wrapper>
           { this.displayMatches() }
-        </ul>
+        </Wrapper>
       </div>
     );
   }
 }
+
+const Wrapper = styled.div`
+ &::after {
+  content: '';
+  clear: both;
+  display: table;
+ }
+`
+
+const CardName = styled.h2`
+  color: #ebffaf;
+`
+
+function getWidthString(span) {
+  if (!span) return;
+
+  let width = span / 12 * 100;
+  return `width: ${width}%;`;
+}
+
+const Column = styled.div`
+  float: left;
+  ${({ xs }) => (xs ? getWidthString(xs) : "width: 100%")};
+
+  @media only screen and (min-width: 768px) {
+    ${({ sm }) => sm && getWidthString(sm)};
+  }
+
+  @media only screen and (min-width: 992px) {
+    ${({ md }) => md && getWidthString(md)};
+  }
+
+  @media only screen and (min-width: 1200px) {
+    ${({ lg }) => lg && getWidthString(lg)};
+  }
+`
+
+const Card = styled.section`
+  padding: 4em;
+  width: 30vw;
+  height: 30vh;
+  border: 1px solid black;
+  background: #87c67d;
+  display: flex;
+`
 
 export default App;
 
